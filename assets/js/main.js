@@ -62,56 +62,44 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  const serviceCards = document.querySelectorAll(".vg-service-card");
+  document.addEventListener("DOMContentLoaded", function () {
+    const serviceCards = document.querySelectorAll(".vg-service-card");
 
-  if (serviceCards.length) {
-    function isMobileTablet() {
-      return window.matchMedia(
-        "(max-width: 900px), (hover: none) and (pointer: coarse)"
-      ).matches;
-    }
+    if (!serviceCards.length) return;
 
-    function activateServiceCard(card) {
-      serviceCards.forEach(function (item) {
-        item.classList.remove("is-touch-active");
+    const touchDevice = window.matchMedia(
+      "(hover: none), (pointer: coarse), (max-width: 768px)",
+    );
+
+    function closeCards() {
+      serviceCards.forEach(function (card) {
+        card.classList.remove("is-active");
       });
-
-      card.classList.add("is-touch-active");
     }
-
-    activateServiceCard(serviceCards[0]);
 
     serviceCards.forEach(function (card) {
       card.addEventListener("click", function (event) {
-        if (!isMobileTablet()) {
-          return;
-        }
+        const button = event.target.closest(".vg-service-card__button");
 
-        if (card.classList.contains("is-touch-active")) {
-          return;
-        }
+        if (button) return;
 
-        event.preventDefault();
-        activateServiceCard(card);
+        if (!touchDevice.matches) return;
+
+        if (card.classList.contains("is-active")) {
+          card.classList.remove("is-active");
+        } else {
+          closeCards();
+          card.classList.add("is-active");
+        }
       });
     });
 
     window.addEventListener("resize", function () {
-      if (isMobileTablet()) {
-        const activeCard = document.querySelector(
-          ".vg-service-card.is-touch-active"
-        );
-
-        if (!activeCard) {
-          activateServiceCard(serviceCards[0]);
-        }
-      } else {
-        serviceCards.forEach(function (card) {
-          card.classList.remove("is-touch-active");
-        });
+      if (!touchDevice.matches) {
+        closeCards();
       }
     });
-  }
+  });
 
   const carousels = document.querySelectorAll(".vg-gallery__carousel");
   const galleryItems = document.querySelectorAll(".vg-gallery__item");
@@ -129,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
           carousel.classList.add("vg-gallery-touch-pause");
         }
       },
-      { passive: true }
+      { passive: true },
     );
 
     carousel.addEventListener(
@@ -141,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }, 300);
         }
       },
-      { passive: true }
+      { passive: true },
     );
 
     carousel.addEventListener(
@@ -151,16 +139,11 @@ document.addEventListener("DOMContentLoaded", function () {
           carousel.classList.remove("vg-gallery-touch-pause");
         }
       },
-      { passive: true }
+      { passive: true },
     );
   });
 
-  if (
-    galleryItems.length &&
-    lightbox &&
-    lightboxImage &&
-    closeButton
-  ) {
+  if (galleryItems.length && lightbox && lightboxImage && closeButton) {
     galleryItems.forEach(function (item) {
       const image = item.querySelector("img");
 
@@ -170,15 +153,12 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
 
         lightboxImage.src = image.currentSrc || image.src;
-        lightboxImage.alt =
-          image.alt || "VG Construction Project";
+        lightboxImage.alt = image.alt || "VG Construction Project";
 
         lightbox.classList.add("is-open");
         lightbox.setAttribute("aria-hidden", "false");
 
-        document.body.classList.add(
-          "vg-gallery-lightbox-open"
-        );
+        document.body.classList.add("vg-gallery-lightbox-open");
 
         carousels.forEach(function (carousel) {
           carousel.classList.add("vg-gallery-touch-pause");
@@ -194,9 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
       lightbox.classList.remove("is-open");
       lightbox.setAttribute("aria-hidden", "true");
 
-      document.body.classList.remove(
-        "vg-gallery-lightbox-open"
-      );
+      document.body.classList.remove("vg-gallery-lightbox-open");
 
       carousels.forEach(function (carousel) {
         carousel.classList.remove("vg-gallery-touch-pause");
@@ -213,6 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
     closeButton.addEventListener("click", function (event) {
       event.preventDefault();
       event.stopPropagation();
+
       closeLightbox();
     });
 
@@ -229,29 +208,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  const slider = document.querySelector(
-    ".vg-testimonials__slider"
-  );
+  const slider = document.querySelector(".vg-testimonials__slider");
 
   const prevButton = document.querySelector(
-    ".vg-testimonials__slider-btn--prev"
+    ".vg-testimonials__slider-btn--prev",
   );
 
   const nextButton = document.querySelector(
-    ".vg-testimonials__slider-btn--next"
+    ".vg-testimonials__slider-btn--next",
   );
 
   if (slider && prevButton && nextButton) {
     function getScrollAmount() {
-      const card = slider.querySelector(
-        ".vg-testimonial-card"
-      );
+      const card = slider.querySelector(".vg-testimonial-card");
 
       if (!card) return 0;
 
-      const gap = parseFloat(
-        getComputedStyle(slider).gap
-      ) || 30;
+      const gap = parseFloat(getComputedStyle(slider).gap) || 30;
 
       return card.offsetWidth + gap;
     }
@@ -259,14 +232,14 @@ document.addEventListener("DOMContentLoaded", function () {
     nextButton.addEventListener("click", function () {
       slider.scrollBy({
         left: getScrollAmount(),
-        behavior: "smooth"
+        behavior: "smooth",
       });
     });
 
     prevButton.addEventListener("click", function () {
       slider.scrollBy({
         left: -getScrollAmount(),
-        behavior: "smooth"
+        behavior: "smooth",
       });
     });
   }
