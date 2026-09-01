@@ -138,7 +138,6 @@
         </a>
       </div>
     </div>
-
     <div class="vg-menu-overlay" id="vg-menu-overlay"></div>
 
     <!-- Main area Sections-->
@@ -2146,80 +2145,5 @@
 
     <script src="assets/js/main.js"></script>
     <script src="assets/js/SmoothScroll.js"></script>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const heroImage = document.querySelector(".hero-image");
-        const heroImg = document.querySelector(".hero-image img");
-
-        if (!heroImage || !heroImg) return;
-
-        const maxMovement = 100;
-        const scale = 1;
-
-        let ticking = false;
-
-        function updateParallax() {
-          const rect = heroImage.getBoundingClientRect();
-          const viewportHeight = window.innerHeight;
-
-          if (rect.bottom > 0 && rect.top < viewportHeight) {
-            const imageCenter = rect.top + rect.height / 4;
-            const viewportCenter = viewportHeight / 4;
-
-            const distance = imageCenter - viewportCenter;
-
-            const movement = -(distance / viewportHeight) * maxMovement;
-
-            heroImg.style.transform = `translate3d(0, ${movement}px, 0) scale(${scale})`;
-          }
-
-          ticking = false;
-        }
-
-        function requestUpdate() {
-          if (!ticking) {
-            window.requestAnimationFrame(updateParallax);
-            ticking = true;
-          }
-        }
-
-        window.addEventListener("scroll", requestUpdate, {
-          passive: true,
-        });
-
-        window.addEventListener("resize", requestUpdate);
-
-        requestUpdate();
-      });
-    </script>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const featureCards = document.querySelectorAll(".vg-feature-card");
-
-        featureCards.forEach((card) => {
-          card.addEventListener("click", function (e) {
-            // Don't trigger card activation when clicking the Learn More link
-            if (e.target.closest(".vg-feature-link")) {
-              return;
-            }
-
-            // Only use click activation on mobile/touch devices
-            if (
-              window.matchMedia("(hover: none) and (pointer: coarse)").matches
-            ) {
-              // Remove active from all cards
-              featureCards.forEach((item) => {
-                item.classList.remove("is-active");
-              });
-
-              // Activate clicked card
-              card.classList.add("is-active");
-            }
-          });
-        });
-      });
-    </script>
   </body>
 </html>
