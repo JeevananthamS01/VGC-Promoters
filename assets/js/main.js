@@ -62,13 +62,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  document.addEventListener("DOMContentLoaded", function () {
-    const serviceCards = document.querySelectorAll(".vg-service-card");
 
-    if (!serviceCards.length) return;
+  const serviceCards = document.querySelectorAll(".vg-service-card");
 
+  if (serviceCards.length) {
     const touchDevice = window.matchMedia(
-      "(hover: none), (pointer: coarse), (max-width: 768px)",
+      "(hover: none), (pointer: coarse), (max-width: 768px)"
     );
 
     function closeCards() {
@@ -77,19 +76,34 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
+    function openCard(card) {
+      serviceCards.forEach(function (item) {
+        if (item !== card) {
+          item.classList.remove("is-active");
+        }
+      });
+
+      card.classList.add("is-active");
+    }
+
     serviceCards.forEach(function (card) {
       card.addEventListener("click", function (event) {
-        const button = event.target.closest(".vg-service-card__button");
+        const button = event.target.closest(
+          ".vg-service-card__button"
+        );
 
-        if (button) return;
+        if (button) {
+          return;
+        }
 
-        if (!touchDevice.matches) return;
+        if (!touchDevice.matches) {
+          return;
+        }
 
         if (card.classList.contains("is-active")) {
           card.classList.remove("is-active");
         } else {
-          closeCards();
-          card.classList.add("is-active");
+          openCard(card);
         }
       });
     });
@@ -99,13 +113,28 @@ document.addEventListener("DOMContentLoaded", function () {
         closeCards();
       }
     });
-  });
+  }
 
-  const carousels = document.querySelectorAll(".vg-gallery__carousel");
-  const galleryItems = document.querySelectorAll(".vg-gallery__item");
-  const lightbox = document.getElementById("vgGalleryLightbox");
-  const lightboxImage = document.getElementById("vgGalleryLightboxImage");
-  const closeButton = document.getElementById("vgGalleryLightboxClose");
+
+  const carousels = document.querySelectorAll(
+    ".vg-gallery__carousel"
+  );
+
+  const galleryItems = document.querySelectorAll(
+    ".vg-gallery__item"
+  );
+
+  const lightbox = document.getElementById(
+    "vgGalleryLightbox"
+  );
+
+  const lightboxImage = document.getElementById(
+    "vgGalleryLightboxImage"
+  );
+
+  const closeButton = document.getElementById(
+    "vgGalleryLightboxClose"
+  );
 
   let isLightboxOpen = false;
 
@@ -114,10 +143,14 @@ document.addEventListener("DOMContentLoaded", function () {
       "touchstart",
       function () {
         if (!isLightboxOpen) {
-          carousel.classList.add("vg-gallery-touch-pause");
+          carousel.classList.add(
+            "vg-gallery-touch-pause"
+          );
         }
       },
-      { passive: true },
+      {
+        passive: true
+      }
     );
 
     carousel.addEventListener(
@@ -125,25 +158,39 @@ document.addEventListener("DOMContentLoaded", function () {
       function () {
         if (!isLightboxOpen) {
           setTimeout(function () {
-            carousel.classList.remove("vg-gallery-touch-pause");
+            carousel.classList.remove(
+              "vg-gallery-touch-pause"
+            );
           }, 300);
         }
       },
-      { passive: true },
+      {
+        passive: true
+      }
     );
 
     carousel.addEventListener(
       "touchcancel",
       function () {
         if (!isLightboxOpen) {
-          carousel.classList.remove("vg-gallery-touch-pause");
+          carousel.classList.remove(
+            "vg-gallery-touch-pause"
+          );
         }
       },
-      { passive: true },
+      {
+        passive: true
+      }
     );
   });
 
-  if (galleryItems.length && lightbox && lightboxImage && closeButton) {
+
+  if (
+    galleryItems.length &&
+    lightbox &&
+    lightboxImage &&
+    closeButton
+  ) {
     galleryItems.forEach(function (item) {
       const image = item.querySelector("img");
 
@@ -152,32 +199,52 @@ document.addEventListener("DOMContentLoaded", function () {
       item.addEventListener("click", function (event) {
         event.preventDefault();
 
-        lightboxImage.src = image.currentSrc || image.src;
-        lightboxImage.alt = image.alt || "VG Construction Project";
+        lightboxImage.src =
+          image.currentSrc || image.src;
+
+        lightboxImage.alt =
+          image.alt || "VG Construction Project";
 
         lightbox.classList.add("is-open");
-        lightbox.setAttribute("aria-hidden", "false");
 
-        document.body.classList.add("vg-gallery-lightbox-open");
+        lightbox.setAttribute(
+          "aria-hidden",
+          "false"
+        );
+
+        document.body.classList.add(
+          "vg-gallery-lightbox-open"
+        );
 
         carousels.forEach(function (carousel) {
-          carousel.classList.add("vg-gallery-touch-pause");
+          carousel.classList.add(
+            "vg-gallery-touch-pause"
+          );
         });
 
         isLightboxOpen = true;
       });
     });
 
+
     function closeLightbox() {
       if (!isLightboxOpen) return;
 
       lightbox.classList.remove("is-open");
-      lightbox.setAttribute("aria-hidden", "true");
 
-      document.body.classList.remove("vg-gallery-lightbox-open");
+      lightbox.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      document.body.classList.remove(
+        "vg-gallery-lightbox-open"
+      );
 
       carousels.forEach(function (carousel) {
-        carousel.classList.remove("vg-gallery-touch-pause");
+        carousel.classList.remove(
+          "vg-gallery-touch-pause"
+        );
       });
 
       setTimeout(function () {
@@ -188,59 +255,95 @@ document.addEventListener("DOMContentLoaded", function () {
       isLightboxOpen = false;
     }
 
-    closeButton.addEventListener("click", function (event) {
-      event.preventDefault();
-      event.stopPropagation();
 
-      closeLightbox();
-    });
+    closeButton.addEventListener(
+      "click",
+      function (event) {
+        event.preventDefault();
+        event.stopPropagation();
 
-    lightbox.addEventListener("click", function (event) {
-      if (event.target === lightbox) {
         closeLightbox();
       }
-    });
+    );
 
-    document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape" && isLightboxOpen) {
-        closeLightbox();
+
+    lightbox.addEventListener(
+      "click",
+      function (event) {
+        if (event.target === lightbox) {
+          closeLightbox();
+        }
       }
-    });
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      function (event) {
+        if (
+          event.key === "Escape" &&
+          isLightboxOpen
+        ) {
+          closeLightbox();
+        }
+      }
+    );
   }
 
-  const slider = document.querySelector(".vg-testimonials__slider");
+
+  const slider = document.querySelector(
+    ".vg-testimonials__slider"
+  );
 
   const prevButton = document.querySelector(
-    ".vg-testimonials__slider-btn--prev",
+    ".vg-testimonials__slider-btn--prev"
   );
 
   const nextButton = document.querySelector(
-    ".vg-testimonials__slider-btn--next",
+    ".vg-testimonials__slider-btn--next"
   );
 
-  if (slider && prevButton && nextButton) {
+
+  if (
+    slider &&
+    prevButton &&
+    nextButton
+  ) {
     function getScrollAmount() {
-      const card = slider.querySelector(".vg-testimonial-card");
+      const card = slider.querySelector(
+        ".vg-testimonial-card"
+      );
 
       if (!card) return 0;
 
-      const gap = parseFloat(getComputedStyle(slider).gap) || 30;
+      const gap =
+        parseFloat(
+          getComputedStyle(slider).gap
+        ) || 30;
 
       return card.offsetWidth + gap;
     }
 
-    nextButton.addEventListener("click", function () {
-      slider.scrollBy({
-        left: getScrollAmount(),
-        behavior: "smooth",
-      });
-    });
 
-    prevButton.addEventListener("click", function () {
-      slider.scrollBy({
-        left: -getScrollAmount(),
-        behavior: "smooth",
-      });
-    });
+    nextButton.addEventListener(
+      "click",
+      function () {
+        slider.scrollBy({
+          left: getScrollAmount(),
+          behavior: "smooth"
+        });
+      }
+    );
+
+
+    prevButton.addEventListener(
+      "click",
+      function () {
+        slider.scrollBy({
+          left: -getScrollAmount(),
+          behavior: "smooth"
+        });
+      }
+    );
   }
 });
