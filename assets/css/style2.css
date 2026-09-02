@@ -2007,7 +2007,7 @@ body.vg-gallery-lightbox-open {
   }
 }
 
-/* Services */
+/* Services-2 */
 .vg-services {
   position: relative;
   width: 100%;
@@ -2312,7 +2312,12 @@ body.vg-gallery-lightbox-open {
 .vg-service-card.is-active {
   z-index: 10;
   border-color: rgba(184, 63, 1, 0.5);
-  background: rgba(255, 255, 255, 0.72);
+  background: linear-gradient(
+    145deg,
+    rgba(0, 0, 0, 0.18) 0%,
+    rgba(0, 0, 0, 0.833) 48%,
+    rgba(0, 20, 30, 0.88) 100%
+  );
   box-shadow: 0 18px 40px rgba(36, 21, 13, 0.14);
 }
 
