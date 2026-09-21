@@ -88,6 +88,7 @@ a {
 }
 p {
   font-family: "Switzer-Regular", sans-serif;
+  font-size: 14px;
   font-weight: 600;
 }
 .container {
@@ -2747,7 +2748,8 @@ body.vg-gallery-lightbox-open {
     width: 35px;
   }
   .vg-packages__title {
-    font-size: 38px;
+    font-size: 30px;
+    line-height: 34px;
     letter-spacing: -1.8px;
   }
   .vg-packages__grid {
@@ -3660,12 +3662,13 @@ body.vg-gallery-lightbox-open {
   }
   .vg-footer__bottom-links {
     display: block;
+    font-size: 12px;
     max-width: 100%;
   }
   .vg-footer__bottom-links span {
     display: block;
     white-space: normal;
-    line-height: 1.5;
+    line-height: 20px;
   }
 }
 .whatsapp-btn {
